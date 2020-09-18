@@ -1,3 +1,9 @@
+'''
+
+Name : Sanket Meshram
+Roll No. : 17CS30030
+
+'''
 
 import sys
 
@@ -33,20 +39,80 @@ def nodes_with_highest_degree(graph) :
     mx_deg=max([ node.GetDeg() for node in graph.Nodes()])
     return [node.GetId() for node in graph.Nodes() if node.GetDeg() == mx_deg]
     
+def get_bridges(graph) : 
+    bridges = snap.TIntPrV()  # 
+    snap.GetEdgeBridges(graph,bridges)
+    return bridges
+
+
+def get_articulation_points(graph):
+    articulation_points = snap.TIntV()   
+    snap.GetArtPoints(graph, articulation_points)
+    return articulation_points
+
+def get_mean(data) : 
+    return sum(data)/len(data)
+
+def get_variance(data) : 
+    mean=get_mean(data)
+    return sum([(i-mean)**2 for i in data])/len(data)
+
+
 
 if __name__ == "__main__":
+    '''
+        ask how to take input from file cause directory of terminal can vary ?
+        what is variance and mean in here ?
+        how to plot ?
+        how to do last 3 parts ? 
 
-    # file_name = sys.argv[1]
+    '''
+    # file_name = sys.argv[1]   
     file_name = "facebook.elist"
     subgraph_name=file_name.split('.')[0]
     graph = make_snap_graph( list_of_edge_from_file(file_name) )
 
     print("Number of nodes:",graph.GetNodes())
     print("Number of edges:",graph.GetEdges())
-    print("Number of nodes with degree=7:", snap.CntDegNodes(graph,7) )  # ???????????
+    print("Number of nodes with degree=7:", snap.CntDegNodes(graph,7) )
     print("Node id(s) with highest degree:", end=" " )
     print(*nodes_with_highest_degree(graph),sep=",")
     # snap.PlotInDegDistr(graph, "example ", subgraph_name+" degree Distribution")    
+
+
+    full_diameter = []
+    full_diameter.append(snap.GetBfsFullDiam(graph, 10))
+    print("Approximate full diameter by sampling 10 nodes:",full_diameter[-1])
+    full_diameter.append(snap.GetBfsFullDiam(graph, 100))
+    print("Approximate full diameter by sampling 100 nodes:",full_diameter[-1])
+    full_diameter.append(snap.GetBfsFullDiam(graph, 1000))
+    print("Approximate full diameter by sampling 1000 nodes:",full_diameter[-1])
+
+    print("Approximate full diameter (mean and variance): ",get_mean(full_diameter),',',get_variance(full_diameter),sep="")
+
+    effective_diameter = []
+    effective_diameter.append(snap.GetBfsEffDiam(graph, 10))
+    print("Approximate effective diameter by sampling 10 nodes:", effective_diameter[-1])
+    effective_diameter.append(snap.GetBfsEffDiam(graph, 100))
+    print("Approximate effective diameter by sampling 100 nodes:",effective_diameter[-1])
+    effective_diameter.append(snap.GetBfsEffDiam(graph, 1000))
+    print("Approximate effective diameter by sampling 1000 nodes:",effective_diameter[-1])
+
+    print("Approximate effective diameter (mean and variance):", get_mean(effective_diameter), ',', get_variance(effective_diameter), sep="")
+
+    
+    print("Fraction of nodes in largest connected component:", snap.GetMxSccSz(graph))
+    print("Number of edge bridges:",get_bridges(graph).Len())
+    print("Number of articulation points:",get_articulation_points(graph).Len())
+    print("Average clustering coefficient:", snap.GetClustCf(graph))
+    print("Number of triads:", snap.GetTriads(graph))
+    print("Clustering coefficient of random node",":")
+    print("Number of triads random node 3 participates:")
+    print("Number of edges that participate in at least one triad:")
+    #plot ####################### plot ################################
+
+
+
     
 
     
