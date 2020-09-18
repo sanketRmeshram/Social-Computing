@@ -19,3 +19,18 @@ while True :
     # print(a,b)
     if a%4==0 and b%4==0 :
         print(a,b,file=twitter_sub)
+
+amazon = open("F:\Social computing\Social-Computing\Assignment-1\com-amazon.ungraph.txt\com-amazon.ungraph.txt")
+amazon_sub = open("17CS30030/subgraphs/amazon.elist", "w")
+amazon.readline()
+amazon.readline()
+amazon.readline()
+amazon.readline()
+while True:
+    line = amazon.readline()
+    if len(line) == 0:
+        break
+    a, b = [int(i) for i in line.split()]
+    # print(a,b)
+    if a % 4 == 0 and b % 4 == 0:
+        print(a, b, file=amazon_sub)
