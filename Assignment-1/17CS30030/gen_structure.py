@@ -97,10 +97,7 @@ if __name__ == "__main__":
     print("Node id(s) with highest degree:", end=" " )
     print(*nodes_with_highest_degree(graph),sep=",")
 
-    distribution = snap.TFltPrV()
-    snap.GetClustCf(graph, distribution)
-    plot_distribution(distribution, "connected_comp_"+subgraph_name,"number of nodes in the component","number of such components" )
-    del distribution
+    snap.PlotInDegDistr(graph, "plots/shortest_path_"+subgraph_name,"Undirected graph - in-degree Distribution")
 
     full_diameter = []
     full_diameter.append(snap.GetBfsFullDiam(graph, 10))
@@ -122,10 +119,19 @@ if __name__ == "__main__":
 
     print("Approximate effective diameter (mean and variance):", get_mean(effective_diameter), ',', get_variance(effective_diameter), sep="")
 
-    
+    snap.PlotShortPathDistr( graph , "plots/shortest_path_"+subgraph_name , "Undirected graph - shortest path")
+
     print("Fraction of nodes in largest connected component:", snap.GetMxSccSz(graph))
     print("Number of edge bridges:",get_bridges(graph).Len())
     print("Number of articulation points:",get_articulation_points(graph).Len())
+
+    distribution = snap.TFltPrV()
+    snap.GetClustCf(graph, distribution)
+    plot_distribution(distribution, "connected_comp_"+subgraph_name,
+                      "number of nodes in the component", "number of such components")
+
+    snap.PlotSccDistr(graph, "plots/connected_comp_"+subgraph_name,"Undirected graph - scc distribution")
+
     print("Average clustering coefficient:", snap.GetClustCf(graph))
     print("Number of triads:", snap.GetTriads(graph))
     random_node = graph.GetRndNId()
@@ -133,11 +139,8 @@ if __name__ == "__main__":
     random_node = graph.GetRndNId()
     print("Number of triads random node",random_node, "participates:", snap.GetNodeTriads(graph,random_node))
     print("Number of edges that participate in at least one triad:",snap.GetTriadEdges(graph))
-    #plot ####################### plot ################################
-    distribution = snap.TFltPrV()
-    snap.GetClustCf(graph, distribution)
-    plot_distribution(distribution, "clustering_coeff_" + subgraph_name, "degree", "avg. clustering coefficient of nodes of that degree")
 
+    snap.PlotClustCf(graph, "plots/clustering_coeff_" + subgraph_name,"Undirected graph - clustering coefficient")
 
     
 
