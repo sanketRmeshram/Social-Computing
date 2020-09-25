@@ -105,7 +105,7 @@ if __name__ == "__main__":
     full_diameter.append(snap.GetBfsFullDiam(graph, 1000))
     print("Approximate full diameter by sampling 1000 nodes:",full_diameter[-1])
 
-    print("Approximate full diameter (mean and variance): ",get_mean(full_diameter),',',get_variance(full_diameter),sep="")
+    print("Approximate full diameter (mean and variance): ",round(get_mean(full_diameter),4),',',round(get_variance(full_diameter),4),sep="")
 
     effective_diameter = []
     effective_diameter.append(snap.GetBfsEffDiam(graph, 10))
