@@ -7,6 +7,8 @@ Roll No. : 17CS30030
 
 import sys
 
+import os
+
 import snap
 Rnd = snap.TRnd(42)
 Rnd.Randomize()
@@ -79,15 +81,9 @@ def plot_distribution(data,name,x_label,y_label) :
 
 
 if __name__ == "__main__":
-    '''
-        # ask how to take input from file cause directory of terminal can vary ?
-        # what is variance and mean in here ?
-        how to plot ?
-        # how to do last 3 parts ? 
 
-    '''
     file_name = sys.argv[1]   
-    # file_name = "facebook.elist"
+
     subgraph_name=file_name.split('.')[0]
     graph = make_snap_graph( list_of_edge_from_file(file_name) )
 
@@ -97,7 +93,9 @@ if __name__ == "__main__":
     print("Node id(s) with highest degree:", end=" " )
     print(*nodes_with_highest_degree(graph),sep=",")
 
-    snap.PlotInDegDistr(graph, "plots/shortest_path_"+subgraph_name,"Undirected graph - in-degree Distribution")
+    snap.PlotInDegDistr(graph, "temp","Undirected graph - in-degree Distribution")
+    os.system("mv inDeg.temp.png plots/deg_dist_"+ subgraph_name +".png")
+    os.system("rm inDeg.*")
 
     full_diameter = []
     full_diameter.append(snap.GetBfsFullDiam(graph, 10))
@@ -111,38 +109,36 @@ if __name__ == "__main__":
 
     effective_diameter = []
     effective_diameter.append(snap.GetBfsEffDiam(graph, 10))
-    print("Approximate effective diameter by sampling 10 nodes:", effective_diameter[-1])
+    print("Approximate effective diameter by sampling 10 nodes:", round(effective_diameter[-1],4))
     effective_diameter.append(snap.GetBfsEffDiam(graph, 100))
-    print("Approximate effective diameter by sampling 100 nodes:",effective_diameter[-1])
+    print("Approximate effective diameter by sampling 100 nodes:",round(effective_diameter[-1],4))
     effective_diameter.append(snap.GetBfsEffDiam(graph, 1000))
-    print("Approximate effective diameter by sampling 1000 nodes:",effective_diameter[-1])
+    print("Approximate effective diameter by sampling 1000 nodes:",round(effective_diameter[-1],4))
 
-    print("Approximate effective diameter (mean and variance):", get_mean(effective_diameter), ',', get_variance(effective_diameter), sep="")
+    print("Approximate effective diameter (mean and variance):", round(get_mean(effective_diameter),4), ',', round(get_variance(effective_diameter),4), sep="")
 
-    snap.PlotShortPathDistr( graph , "plots/shortest_path_"+subgraph_name , "Undirected graph - shortest path")
+    snap.PlotShortPathDistr( graph , "temp" , "Undirected graph - shortest path")
+    os.system("mv diam.temp.png plots/shortest_path_"+ subgraph_name +".png")
+    os.system("rm diam.*")
 
-    print("Fraction of nodes in largest connected component:", snap.GetMxSccSz(graph))
+    print("Fraction of nodes in largest connected component:", round(snap.GetMxSccSz(graph),4))
     print("Number of edge bridges:",get_bridges(graph).Len())
     print("Number of articulation points:",get_articulation_points(graph).Len())
 
-    distribution = snap.TFltPrV()
-    snap.GetClustCf(graph, distribution)
-    plot_distribution(distribution, "connected_comp_"+subgraph_name,
-                      "number of nodes in the component", "number of such components")
 
-    snap.PlotSccDistr(graph, "plots/connected_comp_"+subgraph_name,"Undirected graph - scc distribution")
+    snap.PlotSccDistr(graph, "temp","Undirected graph - scc distribution")
+    os.system("mv scc.temp.png plots/connected_comp_"+ subgraph_name +".png")
+    os.system("rm scc.*")
 
-    print("Average clustering coefficient:", snap.GetClustCf(graph))
+    print("Average clustering coefficient:", round(snap.GetClustCf(graph),4))
     print("Number of triads:", snap.GetTriads(graph))
     random_node = graph.GetRndNId()
-    print("Clustering coefficient of random node",random_node,":",get_each_nodes_ClusteringCofficient(graph)[random_node])
+    print("Clustering coefficient of random node",random_node,":",round(get_each_nodes_ClusteringCofficient(graph)[random_node],4))
     random_node = graph.GetRndNId()
     print("Number of triads random node",random_node, "participates:", snap.GetNodeTriads(graph,random_node))
     print("Number of edges that participate in at least one triad:",snap.GetTriadEdges(graph))
 
-    snap.PlotClustCf(graph, "plots/clustering_coeff_" + subgraph_name,"Undirected graph - clustering coefficient")
+    snap.PlotClustCf(graph, "temp","Undirected graph - clustering coefficient")
+    os.system("mv ccf.temp.png plots/clustering_coeff_"+ subgraph_name +".png")
+    os.system("rm ccf.*")
 
-    
-
-    
-    pass
