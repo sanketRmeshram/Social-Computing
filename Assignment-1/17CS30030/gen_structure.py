@@ -40,7 +40,7 @@ def nodes_with_highest_degree(graph) :
     return [node.GetId() for node in graph.Nodes() if node.GetDeg() == mx_deg]
     
 def get_bridges(graph) : 
-    bridges = snap.TIntPrV()  # 
+    bridges = snap.TIntPrV() 
     snap.GetEdgeBridges(graph,bridges)
     return bridges
 
@@ -57,18 +57,37 @@ def get_variance(data) :
     mean=get_mean(data)
     return sum([(i-mean)**2 for i in data])/len(data)
 
+def get_each_nodes_ClusteringCofficient(graph) :
+    ClusteringCofficients = snap.TIntFltH()
+    snap.GetNodeClustCf(graph,ClusteringCofficients)
+    return ClusteringCofficients
+
+
+def plot_distribution(data,name,x_label,y_label) : 
+    x = []
+    y = []
+    for pair in data : 
+        x.append(pair.GetVal1())
+        y.append(pair.GetVal2())
+    import matplotlib.pyplot as plt
+    plt.scatter(x,y,s=6)
+    plt.xlabel(x_label)
+    plt.ylabel(y_label)
+    plt.title(name)
+    plt.savefig("plots/"+name+".png")
+    plt.close()
 
 
 if __name__ == "__main__":
     '''
-        ask how to take input from file cause directory of terminal can vary ?
-        what is variance and mean in here ?
+        # ask how to take input from file cause directory of terminal can vary ?
+        # what is variance and mean in here ?
         how to plot ?
-        how to do last 3 parts ? 
+        # how to do last 3 parts ? 
 
     '''
-    # file_name = sys.argv[1]   
-    file_name = "facebook.elist"
+    file_name = sys.argv[1]   
+    # file_name = "facebook.elist"
     subgraph_name=file_name.split('.')[0]
     graph = make_snap_graph( list_of_edge_from_file(file_name) )
 
@@ -77,8 +96,11 @@ if __name__ == "__main__":
     print("Number of nodes with degree=7:", snap.CntDegNodes(graph,7) )
     print("Node id(s) with highest degree:", end=" " )
     print(*nodes_with_highest_degree(graph),sep=",")
-    # snap.PlotInDegDistr(graph, "example ", subgraph_name+" degree Distribution")    
 
+    distribution = snap.TFltPrV()
+    snap.GetClustCf(graph, distribution)
+    plot_distribution(distribution, "connected_comp_"+subgraph_name,"number of nodes in the component","number of such components" )
+    del distribution
 
     full_diameter = []
     full_diameter.append(snap.GetBfsFullDiam(graph, 10))
@@ -106,11 +128,15 @@ if __name__ == "__main__":
     print("Number of articulation points:",get_articulation_points(graph).Len())
     print("Average clustering coefficient:", snap.GetClustCf(graph))
     print("Number of triads:", snap.GetTriads(graph))
-    print("Clustering coefficient of random node",":")
-    print("Number of triads random node 3 participates:")
-    print("Number of edges that participate in at least one triad:")
+    random_node = graph.GetRndNId()
+    print("Clustering coefficient of random node",random_node,":",get_each_nodes_ClusteringCofficient(graph)[random_node])
+    random_node = graph.GetRndNId()
+    print("Number of triads random node",random_node, "participates:", snap.GetNodeTriads(graph,random_node))
+    print("Number of edges that participate in at least one triad:",snap.GetTriadEdges(graph))
     #plot ####################### plot ################################
-
+    distribution = snap.TFltPrV()
+    snap.GetClustCf(graph, distribution)
+    plot_distribution(distribution, "clustering_coeff_" + subgraph_name, "degree", "avg. clustering coefficient of nodes of that degree")
 
 
     
