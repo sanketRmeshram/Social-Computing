@@ -91,6 +91,8 @@ def PageRank(g,alpha) :
             for v in g[u] :
                 t+=PR[v]/len(g[v])
             PR[u] = alpha*t + (1-alpha)*d[u]
+        total = sum(PR)
+        PR = [i/total for i in PR]
     return PR
     
 
