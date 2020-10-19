@@ -16,7 +16,7 @@ from queue import Queue
 
 def distance_array_BFS(g,start) :
     dist = [-1 for _ in range(len(g))]
-    q = Queue(maxsize=len(g))
+    q = Queue()
     dist[start] = 0
     q.put(start)
     while q.empty() is False:
@@ -46,7 +46,7 @@ def Brands_BFS(start,g,CB) :
     sigma[start] = 1
     dist = [-1 for _ in range(len(g))]
     dist[start] = 0
-    q = Queue(maxsize=len(g))
+    q = Queue()
     q.put(start)
     while q.empty() is False:
         v = q.get()
@@ -62,9 +62,9 @@ def Brands_BFS(start,g,CB) :
     while  len(stk) :
         w = stk.pop()
         for v in P[w] :
-            delta[v]+= sigma[v]/sigma[w] * (1+delta[w])
-            if w!=start : 
-                CB[w]+=delta[w]
+            delta[v]+= (sigma[v]/sigma[w]) * (1+delta[w])
+        if w!=start : 
+            CB[w]+=delta[w]
 
 
 def BetweennessCentrality_Brands(g):
@@ -73,26 +73,32 @@ def BetweennessCentrality_Brands(g):
     CB = [0 for i in range(len(g))]
     for s in range(n) :
         Brands_BFS(s,g,CB)
-    CB = [i*2/((n-1)*(n-2)) for i in CB]
+    CB = [(i*2)/((n-1)*(n-2)) for i in CB]
     return CB
     
 def PageRank(g,alpha) :
     n = len(g)
-    d = [1/n for _ in range(n) ]
-    Biased_Nodes = ((n-1)//4) +1
+    d = [0 for _ in range(n) ]
+    sz=0
     for i in range(n) :
         if i%4 ==0 :
-            d[i]=1/Biased_Nodes
+            d[i]=1
+            sz+=1
+    d=[i/sz for i in d]
+    
+    PR=d.copy()
 
-    PR = [_ for _ in d]
-    for _ in range(300) :  # cange afterward
+    for _ in range(300) :  
+        PR_NEW=PR.copy()
         for u in range(n) :
             t=0
             for v in g[u] :
                 t+=PR[v]/len(g[v])
-            PR[u] = alpha*t + (1-alpha)*d[u]
+            PR_NEW[u] = alpha*t + (1-alpha)*d[u]
+        PR=PR_NEW.copy()
         total = sum(PR)
         PR = [i/total for i in PR]
+        
     return PR
     
 
@@ -129,18 +135,18 @@ if __name__ == "__main__":
 
     start_time = time.time()
 
-    g= make_graph()
+    g = make_graph()
     
     SaveToFile(ClosenessCentrality(g), "closeness.txt")
 
-    print("--- %s seconds ---" % (time.time() - start_time))
+    # print("--- %s seconds ---" % (time.time() - start_time))
 
     SaveToFile(BetweennessCentrality_Brands(g), "betweenness.txt")
 
-    print("--- %s seconds ---" % (time.time() - start_time))
+    # print("--- %s seconds ---" % (time.time() - start_time))
 
     SaveToFile(PageRank(g,.8), "pagerank.txt")
 
-    print("--- %s seconds ---" % (time.time() - start_time))
+    # print("--- %s seconds ---" % (time.time() - start_time))
     
     pass

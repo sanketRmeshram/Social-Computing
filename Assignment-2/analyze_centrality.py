@@ -87,7 +87,7 @@ if __name__ == "__main__":
     print("#overlaps for Betweenness Centrality:",get_same(betweenness_centrality_snap[:100],betweenness_centrality))
 ###################################################################################################
     pagerank_centrality_snap = snap.TIntFltH()
-    snap.GetPageRank(graph, pagerank_centrality_snap)
+    snap.GetPageRank(graph, pagerank_centrality_snap,.8,1e-9,1000)
 
     pagerank_centrality_snap = [[pagerank_centrality_snap[i], i] for i in range(n)]
 
