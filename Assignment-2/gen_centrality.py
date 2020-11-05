@@ -88,7 +88,7 @@ def PageRank(g,alpha) :
     
     PR=d.copy()
 
-    for _ in range(300) :  
+    for _ in range(100) :  
         PR_NEW=PR.copy()
         for u in range(n) :
             t=0

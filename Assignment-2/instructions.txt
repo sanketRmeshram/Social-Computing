@@ -1,0 +1,13 @@
+Name : Sanket Meshram
+Roll No. : 17CS30030
+
+Environment : Must be an Linux system 
+Python version : python3 (Python 3.6.9) # Any python3 version will work i guess
+goto 17CS30030 folder. open terminal in that folder.(Because all paths are relative to 17CS30030 folder )
+
+if your default python is python3 then use "python"  as your command.
+Run command : python gen_centrality.py  ( if your default python is python3)
+              python analyze_centrality.py  ( if your default python is python3)
+If not then  use "python3"  as your command :
+Run command : python3 gen_centrality.py 
+              python3 analyze_centrality.py 
