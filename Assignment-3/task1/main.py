@@ -3,6 +3,8 @@ Name : Sanket Meshram
 Roll No. : 17CS30030
 """
 
+import fasttext
+import os
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.ensemble import RandomForestClassifier
@@ -117,8 +119,30 @@ if __name__ == "__main__":
 
     ############################ PART - 2 #########################################
 
+    ############################ PART - 3 #########################################
+    train_data_FastText = open("data.train.txt","w")
+    for i in range(len(x_train)) :
+        if y_train[i] :
+            print("__label__positive",end = " ",file = train_data_FastText)
+        else :
+            print("__label__negative", end=" ", file=train_data_FastText)
+        print(x_train[i], file=train_data_FastText)
+    
+    model = fasttext.train_supervised('data.train.txt')
 
+    y_pred_FT = []
 
+    for i in x_test :
+        if model.predict(i) == "__label__positive" :
+            y_pred_FT.append(1)
+        else :
+            y_pred_FT.append(0)
+    
+    y_pred_SVM = pd.DataFrame(list(zip(id_test, y_pred_FT)), columns=['id', 'hateful'])
+    y_pred_SVM.to_csv("../predictions/FT.csv", index=False)
+
+    os.system("data.train.txt")
+    ############################ PART - 3 #########################################
 
 
 
