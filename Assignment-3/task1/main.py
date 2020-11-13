@@ -133,7 +133,8 @@ if __name__ == "__main__":
     y_pred_FT = []
 
     for i in x_test :
-        if model.predict(i) == "__label__positive" :
+
+        if model.predict(i)[0][0] == "__label__positive" :
             y_pred_FT.append(1)
         else :
             y_pred_FT.append(0)
@@ -141,7 +142,7 @@ if __name__ == "__main__":
     y_pred_SVM = pd.DataFrame(list(zip(id_test, y_pred_FT)), columns=['id', 'hateful'])
     y_pred_SVM.to_csv("../predictions/FT.csv", index=False)
 
-    os.system("data.train.txt")
+    os.system("rm data.train.txt")
     ############################ PART - 3 #########################################
 
 
