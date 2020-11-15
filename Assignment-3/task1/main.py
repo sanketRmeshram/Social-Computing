@@ -3,7 +3,8 @@ Name : Sanket Meshram
 Roll No. : 17CS30030
 """
 
-import fasttext
+# import fasttext
+import time
 import os
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -76,13 +77,15 @@ def  get_Word2Vec(a):
     vector_size = 300
     ans = []
     for i in a : 
-        ans.append(nlp(i).vector)
+        ans.append(list(nlp(i).vector))
         if len(ans[-1]) == 0 :
             ans[-1] = [0 for _ in range(vector_size)]
     return ans
     pass
 
 if __name__ == "__main__":
+
+    start_time = time.time()
 
     id_train, x_train, y_train = read_train_and_preprocess()
     id_test, x_test = read_test_and_preprocess()
@@ -98,19 +101,19 @@ if __name__ == "__main__":
 
     clf = RandomForestClassifier()
     clf.fit(x_train_tfidf, y_train)
-    y_pred_RF = list(clf.predict(x_train_tfidf))
+    y_pred_RF = list(clf.predict(x_test_tfidf))
 
     y_pred_RF = pd.DataFrame(list(zip(id_test, y_pred_RF)), columns=['id', 'hateful'])
 
     y_pred_RF.to_csv("../predictions/RF.csv",index=False)
     
     ############################ PART - 1 #########################################
-
+    print("--- %s seconds ---" % (time.time() - start_time))
     ############################ PART - 2 #########################################
 
     x_train_Word2Vec = get_Word2Vec(x_train)
     x_test_Word2Vec =get_Word2Vec(x_test)
-    clf = svm.SVC()
+    clf = svm.SVC() 
     clf.fit(x_train_Word2Vec, y_train)
     y_pred_SVM = list(clf.predict(x_test_Word2Vec))
 
@@ -118,7 +121,7 @@ if __name__ == "__main__":
     y_pred_SVM.to_csv("../predictions/SVM.csv", index=False)
 
     ############################ PART - 2 #########################################
-
+    print("--- %s seconds ---" % (time.time() - start_time))
     ############################ PART - 3 #########################################
     train_data_FastText = open("data.train.txt","w")
     for i in range(len(x_train)) :
@@ -131,9 +134,7 @@ if __name__ == "__main__":
     model = fasttext.train_supervised('data.train.txt')
 
     y_pred_FT = []
-
     for i in x_test :
-
         if model.predict(i)[0][0] == "__label__positive" :
             y_pred_FT.append(1)
         else :
@@ -145,7 +146,7 @@ if __name__ == "__main__":
     os.system("rm data.train.txt")
     ############################ PART - 3 #########################################
 
-
+    print("--- %s seconds ---" % (time.time() - start_time))
 
     
 
