@@ -3,7 +3,7 @@ Name : Sanket Meshram
 Roll No. : 17CS30030
 """
 
-# import fasttext
+import fasttext
 import time
 import os
 import pandas as pd
@@ -56,22 +56,21 @@ def read_test_and_preprocess():
 
     return data["id"], data["text"]
 
-def get_TfIdf(x):
-    vectorizer = TfidfVectorizer(max_df=.8, min_df=.05)
-    vectors = vectorizer.fit_transform(x)
+
+def test_train_to_TfIdf(train, test):
+
+    vectorizer = TfidfVectorizer(max_df=.8, min_df=5)
+    vectors = vectorizer.fit_transform(train)
     feature_names = vectorizer.get_feature_names()
     dense = vectors.todense()
     denselist = dense.tolist()
-    df = pd.DataFrame(denselist, columns=feature_names)
-    return df
+    train =  numpy.array(denselist)
 
-
-def test_train_to_TfIdf(train, test):
-    temp = train.copy() + test.copy()
-    len_train = len(train)
-    # print(temp[:10])
-    now = get_TfIdf(temp)
-    return now.iloc[:len_train].copy(), now.iloc[len_train:].copy()
+    vectors = vectorizer.transform(test)
+    dense = vectors.todense()
+    denselist = dense.tolist()
+    test = numpy.array(denselist)
+    return train, test 
 
 def  get_Word2Vec(a):
     vector_size = 300
@@ -87,7 +86,7 @@ if __name__ == "__main__":
 
     start_time = time.time()
 
-    id_train, x_train, y_train = read_train_and_preprocess()
+    id_train, x_train,  y_train = read_train_and_preprocess()
     id_test, x_test = read_test_and_preprocess()
 
     len_train = len(x_train)
