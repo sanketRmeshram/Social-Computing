@@ -1,6 +1,16 @@
 Name : Sanket Meshram
 Roll No. : 17CS30030
 
+Environment : Must be an Linux system 
+Python version : python3 (Python 3.6.9) # Any python3 version will work i guess
+goto task1 folder. open terminal in that folder.(Because all paths are relative to task1 folder )
+
 libraries :
+    pandas
+    sklearn
+    spacy
+    numpy 
+    pandas
+
 
 Model for task-2 :

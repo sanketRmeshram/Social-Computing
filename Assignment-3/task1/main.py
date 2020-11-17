@@ -3,7 +3,7 @@ Name : Sanket Meshram
 Roll No. : 17CS30030
 """
 
-import fasttext
+# import fasttext
 import time
 import os
 import pandas as pd
@@ -15,7 +15,7 @@ import spacy
 nlp = spacy.load('en_core_web_md')
 
 def remove_punctuation_and_lower(a):
-    punctuations = '''!()-[]{};:'"\,<>./?@#$%^&*_~'''
+    punctuations = '''!()-[]{};:'"\,<>+./?@#$%^&*_~'''
     a = a.lower()
     for x in punctuations:
         a = a.replace(x, "")
