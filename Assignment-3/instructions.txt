@@ -1,9 +1,13 @@
 Name : Sanket Meshram
 Roll No. : 17CS30030
 
-Environment : Must be an Linux system 
+Environment : Must be an Linux system  (Because fasttext only works in Linux)
 Python version : python3 (Python 3.6.9) # Any python3 version will work i guess
+
+Task 1 :
+
 goto task1 folder. open terminal in that folder.(Because all paths are relative to task1 folder )
+Execute : python3 main.py
 
 libraries :
     pandas
@@ -14,3 +18,8 @@ libraries :
 
 
 Model for task-2 :
+    Trained TF-IDF vector with naive_bayes classifier. 
+
+goto task2 folder. open terminal in that folder.(Because all paths are relative to task2 folder )
+
+Execute : python3 main.py

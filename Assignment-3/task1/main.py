@@ -3,7 +3,7 @@ Name : Sanket Meshram
 Roll No. : 17CS30030
 """
 
-# import fasttext
+import fasttext
 import time
 import os
 import pandas as pd
@@ -84,7 +84,7 @@ def  get_Word2Vec(a):
 
 if __name__ == "__main__":
 
-    start_time = time.time()
+    # start_time = time.time()
 
     id_train, x_train,  y_train = read_train_and_preprocess()
     id_test, x_test = read_test_and_preprocess()
@@ -107,7 +107,7 @@ if __name__ == "__main__":
     y_pred_RF.to_csv("../predictions/RF.csv",index=False)
     
     ############################ PART - 1 #########################################
-    print("--- %s seconds ---" % (time.time() - start_time))
+    # print("--- %s seconds ---" % (time.time() - start_time))
     ############################ PART - 2 #########################################
 
     x_train_Word2Vec = get_Word2Vec(x_train)
@@ -120,7 +120,7 @@ if __name__ == "__main__":
     y_pred_SVM.to_csv("../predictions/SVM.csv", index=False)
 
     ############################ PART - 2 #########################################
-    print("--- %s seconds ---" % (time.time() - start_time))
+    # print("--- %s seconds ---" % (time.time() - start_time))
     ############################ PART - 3 #########################################
     train_data_FastText = open("data.train.txt","w")
     for i in range(len(x_train)) :
@@ -145,7 +145,7 @@ if __name__ == "__main__":
     os.system("rm data.train.txt")
     ############################ PART - 3 #########################################
 
-    print("--- %s seconds ---" % (time.time() - start_time))
+    # print("--- %s seconds ---" % (time.time() - start_time))
 
     
 
