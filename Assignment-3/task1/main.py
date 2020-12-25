@@ -139,8 +139,8 @@ if __name__ == "__main__":
         else :
             y_pred_FT.append(0)
     
-    y_pred_SVM = pd.DataFrame(list(zip(id_test, y_pred_FT)), columns=['id', 'hateful'])
-    y_pred_SVM.to_csv("../predictions/FT.csv", index=False)
+    y_pred_FT = pd.DataFrame(list(zip(id_test, y_pred_FT)), columns=['id', 'hateful'])
+    y_pred_FT.to_csv("../predictions/FT.csv", index=False)
 
     os.system("rm data.train.txt")
     ############################ PART - 3 #########################################
